@@ -2,8 +2,13 @@
 from flask import Flask, request, jsonify
 import joblib
 import numpy as np
+import requests
+import pandas as pd
 
 app = Flask(__name__)
+
+# Slack Webhook URL
+SLACK_WEBHOOK_URL = https://hooks.slack.com/services/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
 
 # Carregar o modelo e o scaler
 model = joblib.load("productivity_model.pkl")
@@ -40,6 +45,27 @@ def predict():
 
     except Exception as e:
         return jsonify({"error": str(e)})
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    try:
+        data = request.json
+        df = pd.DataFrame([data])
+        df_scaled = scaler.transform(df)
+
+        # Predict Performance Score
+        prediction = model.predict(df_scaled)[0]
+
+        # Send prediction result back to Slack
+        slack_message = {
+            "text": f"📊 *Predicted Performance Score:* `{prediction}`"
+        }
+        requests.post(SLACK_WEBHOOK_URL, json=slack_message)
+
+        return jsonify({"predicted_performance": prediction})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)  # Executa na porta 5000
