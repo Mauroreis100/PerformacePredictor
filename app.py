@@ -8,8 +8,7 @@ import pandas as pd
 app = Flask(__name__)
 
 # Slack Webhook URL
-SLACK_WEBHOOK_URL = https://hooks.slack.com/services/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
-
+SLACK_WEBHOOK_URL = https://hooks.slack.com/services/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
 # Carregar o modelo e o scaler
 model = joblib.load("productivity_model.pkl")
 scaler = joblib.load("scaler.pkl")
