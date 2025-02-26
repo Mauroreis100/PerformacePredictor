@@ -1,4 +1,3 @@
-
 from flask import Flask, request, jsonify
 import joblib
 import numpy as np
@@ -7,64 +6,63 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# Slack Webhook URL
-SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
-# Carregar o modelo e o scaler
+SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
+
+# Load Model & Scaler
 model = joblib.load("productivity_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET', 'POST'])  
 def predict():
     try:
-        # Obter parâmetros da URL
-        monthly_salary=work_hours = float(request.args.get("Monthly_Salary", 0))
-        work_hours = float(request.args.get("Work_Hours_Per_Week", 0))
-        overtime = float(request.args.get("Overtime_Hours", 0))
-        projects = float(request.args.get("Projects_Handled", 0))
-        sick_days = float(request.args.get("Sick_Days", 0))
-        remote_freq = float(request.args.get("Remote_Work_Frequency", 0))
-        training_hours = float(request.args.get("Training_Hours", 0))
-        satisfaction = float(request.args.get("Employee_Satisfaction_Score", 0))
-        team_size = float(request.args.get("Team_Size", 0))
-        promotions = float(request.args.get("Promotions", 0))
-        years_at_company = float(request.args.get("Years_At_Company", 0))
+        if request.method == 'GET':  
+            monthly_salary = float(request.args.get("Monthly_Salary", 0))
+            work_hours = float(request.args.get("Work_Hours_Per_Week", 0))
+            overtime = float(request.args.get("Overtime_Hours", 0))
+            projects = float(request.args.get("Projects_Handled", 0))
+            sick_days = float(request.args.get("Sick_Days", 0))
+            remote_freq = float(request.args.get("Remote_Work_Frequency", 0))
+            training_hours = float(request.args.get("Training_Hours", 0))
+            satisfaction = float(request.args.get("Employee_Satisfaction_Score", 0))
+            team_size = float(request.args.get("Team_Size", 0))
+            promotions = float(request.args.get("Promotions", 0))
+            years_at_company = float(request.args.get("Years_At_Company", 0))
 
-        # Criar array com os valores
-        employee_data = np.array([[monthly_salary,work_hours, overtime, projects, sick_days, remote_freq,
-                                   training_hours, satisfaction, team_size, promotions, years_at_company]])
+            # Create feature array
+            employee_data = np.array([[monthly_salary, work_hours, overtime, projects, sick_days, 
+                                       remote_freq, training_hours, satisfaction, team_size, 
+                                       promotions, years_at_company]])
+            employee_data_scaled = scaler.transform(employee_data)
+            predicted_score = model.predict(employee_data_scaled)
 
-        # Normalizar os dados
-        employee_data_scaled = scaler.transform(employee_data)
+            return jsonify({"predicted_productivity": round(predicted_score[0], 2)})
 
-        # Fazer previsão
-        predicted_score = model.predict(employee_data_scaled)
+        elif request.method == 'POST':  
+            data = request.json
+            df = pd.DataFrame([data])
 
-        # Retornar a previsão em JSON
-        return jsonify({"predicted_productivity": round(predicted_score[0], 2)})
+            # Ensure features are in the correct order
+            feature_order = ["Monthly_Salary", "Work_Hours_Per_Week", "Overtime_Hours", 
+                             "Projects_Handled", "Sick_Days", "Remote_Work_Frequency", 
+                             "Training_Hours", "Employee_Satisfaction_Score", "Team_Size", 
+                             "Promotions", "Years_At_Company"]
+            
+            df = df[feature_order]  
+            df_scaled = scaler.transform(df)
 
-    except Exception as e:
-        return jsonify({"error": str(e)})
+            # Predict Performance Score
+            prediction = model.predict(df_scaled)[0]
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    try:
-        data = request.json
-        df = pd.DataFrame([data])
-        df_scaled = scaler.transform(df)
+            # Send prediction result back to Slack
+            slack_message = {
+                "text": f"📊 *Predicted Performance Score:* `{prediction}`"
+            }
+            requests.post(SLACK_WEBHOOK_URL, json=slack_message)
 
-        # Predict Performance Score
-        prediction = model.predict(df_scaled)[0]
-
-        # Send prediction result back to Slack
-        slack_message = {
-            "text": f"📊 *Predicted Performance Score:* `{prediction}`"
-        }
-        requests.post(SLACK_WEBHOOK_URL, json=slack_message)
-
-        return jsonify({"predicted_performance": prediction})
+            return jsonify({"predicted_performance": prediction})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)  # Executa na porta 5000
+    app.run(debug=True, port=5000)  
