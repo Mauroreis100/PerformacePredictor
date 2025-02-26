@@ -13,7 +13,7 @@ SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/T08EUG27PNF/B08EQPJD8LW/aH
 model = joblib.load("productivity_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET'])
 def predict():
     try:
         # Obter parâmetros da URL
