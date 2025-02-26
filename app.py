@@ -6,7 +6,7 @@ import pandas as pd
 
 app = Flask(__name__)
 
-SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
+SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
 
 # Load Model & Scaler
 model = joblib.load("productivity_model.pkl")
@@ -57,7 +57,10 @@ def predict():
             slack_message = {
                 "text": f"📊 *Predicted Performance Score:* `{prediction}`"
             }
-            requests.post(SLACK_WEBHOOK_URL, json=slack_message)
+            slack_response = requests.post(SLACK_WEBHOOK_URL, json=slack_message)
+
+            if slack_response.status_code != 200:
+                print("⚠️ Slack Error:", slack_response.text)
 
             return jsonify({"predicted_performance": prediction})
 
