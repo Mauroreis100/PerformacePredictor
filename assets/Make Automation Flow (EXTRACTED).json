@@ -1,0 +1,787 @@
+{
+    "name": "PerformancePredictor",
+    "flow": [
+        {
+            "id": 8,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 1764245,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "SlackBot"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "token",
+                        "type": "text"
+                    },
+                    {
+                        "name": "team_id",
+                        "type": "text"
+                    },
+                    {
+                        "name": "context_team_id",
+                        "type": "text"
+                    },
+                    {
+                        "name": "context_enterprise_id",
+                        "type": "text"
+                    },
+                    {
+                        "name": "api_app_id",
+                        "type": "text"
+                    },
+                    {
+                        "name": "event",
+                        "spec": [
+                            {
+                                "name": "user",
+                                "type": "text"
+                            },
+                            {
+                                "name": "type",
+                                "type": "text"
+                            },
+                            {
+                                "name": "ts",
+                                "type": "text"
+                            },
+                            {
+                                "name": "client_msg_id",
+                                "type": "text"
+                            },
+                            {
+                                "name": "text",
+                                "type": "text"
+                            },
+                            {
+                                "name": "team",
+                                "type": "text"
+                            },
+                            {
+                                "name": "blocks",
+                                "spec": {
+                                    "spec": [
+                                        {
+                                            "name": "type",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "name": "block_id",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "name": "elements",
+                                            "spec": {
+                                                "spec": [
+                                                    {
+                                                        "name": "type",
+                                                        "type": "text"
+                                                    },
+                                                    {
+                                                        "name": "elements",
+                                                        "spec": {
+                                                            "spec": [
+                                                                {
+                                                                    "name": "type",
+                                                                    "type": "text"
+                                                                },
+                                                                {
+                                                                    "name": "text",
+                                                                    "type": "text"
+                                                                }
+                                                            ],
+                                                            "type": "collection"
+                                                        },
+                                                        "type": "array"
+                                                    }
+                                                ],
+                                                "type": "collection"
+                                            },
+                                            "type": "array"
+                                        }
+                                    ],
+                                    "type": "collection"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "name": "channel",
+                                "type": "text"
+                            },
+                            {
+                                "name": "event_ts",
+                                "type": "text"
+                            },
+                            {
+                                "name": "channel_type",
+                                "type": "text"
+                            }
+                        ],
+                        "type": "collection"
+                    },
+                    {
+                        "name": "type",
+                        "type": "text"
+                    },
+                    {
+                        "name": "event_id",
+                        "type": "text"
+                    },
+                    {
+                        "name": "event_time",
+                        "type": "number"
+                    },
+                    {
+                        "name": "authorizations",
+                        "spec": {
+                            "spec": [
+                                {
+                                    "name": "enterprise_id",
+                                    "type": "text"
+                                },
+                                {
+                                    "name": "team_id",
+                                    "type": "text"
+                                },
+                                {
+                                    "name": "user_id",
+                                    "type": "text"
+                                },
+                                {
+                                    "name": "is_bot",
+                                    "type": "boolean"
+                                },
+                                {
+                                    "name": "is_enterprise_install",
+                                    "type": "boolean"
+                                }
+                            ],
+                            "type": "collection"
+                        },
+                        "type": "array"
+                    },
+                    {
+                        "name": "is_ext_shared_channel",
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "event_context",
+                        "type": "text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 16,
+            "module": "util:ComposeTransformer",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "value": "{{split(8.event.text; newline)}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {},
+                "expect": [
+                    {
+                        "name": "value",
+                        "type": "text",
+                        "label": "Text"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "value",
+                        "type": "text",
+                        "label": "Text",
+                        "multiline": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 36,
+            "module": "util:ComposeTransformer",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "value": "{{substring(16.value; indexOf(16.value; \",\"); length(16.value))}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 0
+                },
+                "restore": {},
+                "expect": [
+                    {
+                        "name": "value",
+                        "type": "text",
+                        "label": "Text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 38,
+            "module": "util:ComposeTransformer",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "value": "{{substring(36.value; 2; length(36.value))}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 900,
+                    "y": 0
+                },
+                "restore": {},
+                "expect": [
+                    {
+                        "name": "value",
+                        "type": "text",
+                        "label": "Text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 44,
+            "module": "util:ComposeTransformer",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "value": "{{substring(38.value; 0; indexOf(38.value; \",\"))}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1200,
+                    "y": 0
+                },
+                "restore": {},
+                "expect": [
+                    {
+                        "name": "value",
+                        "type": "text",
+                        "label": "Text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 15,
+            "module": "http:ActionGetFile",
+            "version": 3,
+            "parameters": {
+                "handleErrors": false
+            },
+            "mapper": {
+                "url": "https://performacepredictor.onrender.com/predict?Monthly_Salary={{44.value}}&Work_Hours_Per_Week=40&Overtime_Hours=5&Projects_Handled=3&Sick_Days=2&Remote_Work_Frequency=3&Training_Hours=10&Employee_Satisfaction_Score=4&Team_Size=5&Promotions=1&Years_At_Company=3",
+                "serializeUrl": false,
+                "method": "get",
+                "shareCookies": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1500,
+                    "y": 0
+                },
+                "restore": {},
+                "parameters": [
+                    {
+                        "name": "handleErrors",
+                        "type": "boolean",
+                        "label": "Evaluate all states as errors (except for 2xx and 3xx )",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "url",
+                        "type": "url",
+                        "label": "URL",
+                        "required": true
+                    },
+                    {
+                        "name": "serializeUrl",
+                        "type": "boolean",
+                        "label": "Serialize URL",
+                        "required": true
+                    },
+                    {
+                        "name": "method",
+                        "type": "hidden",
+                        "label": "Method"
+                    },
+                    {
+                        "name": "shareCookies",
+                        "type": "boolean",
+                        "label": "Share cookies with other HTTP modules",
+                        "required": true
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "data",
+                        "type": "buffer",
+                        "label": "Data",
+                        "semantic": "file:data"
+                    },
+                    {
+                        "name": "fileName",
+                        "type": "filename",
+                        "label": "File name",
+                        "semantic": "file:name"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 14,
+            "module": "slack:CreateMessage",
+            "version": 4,
+            "parameters": {
+                "__IMTCONN__": 5970333
+            },
+            "mapper": {
+                "channelWType": "list",
+                "text": "{{15.data}}",
+                "parse": false,
+                "mrkdwn": true,
+                "channelType": "public",
+                "channel": "C08EY54UUSE"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1800,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "label": "productivity (make)",
+                            "data": {
+                                "scoped": "true",
+                                "connection": "slack3"
+                            }
+                        }
+                    },
+                    "expect": {
+                        "channelWType": {
+                            "label": "Select from the list"
+                        },
+                        "reply_broadcast": {
+                            "mode": "chose"
+                        },
+                        "link_names": {
+                            "mode": "chose"
+                        },
+                        "parse": {
+                            "mode": "chose"
+                        },
+                        "mrkdwn": {
+                            "mode": "chose"
+                        },
+                        "unfurl_links": {
+                            "mode": "chose"
+                        },
+                        "unfurl_media": {
+                            "mode": "chose"
+                        },
+                        "channelType": {
+                            "label": "Public channel"
+                        },
+                        "channel": {
+                            "mode": "chose",
+                            "label": "productivity_predictor"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:slack2,slack3",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "channelWType",
+                        "type": "select",
+                        "label": "Enter a channel ID or name",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "manualy",
+                                "list"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "text",
+                        "type": "text",
+                        "label": "Text"
+                    },
+                    {
+                        "name": "blocks",
+                        "type": "text",
+                        "label": "Blocks"
+                    },
+                    {
+                        "name": "thread_ts",
+                        "type": "text",
+                        "label": "Thread message ID (time stamp)"
+                    },
+                    {
+                        "name": "reply_broadcast",
+                        "type": "boolean",
+                        "label": "Reply broadcast"
+                    },
+                    {
+                        "name": "link_names",
+                        "type": "boolean",
+                        "label": "Link names"
+                    },
+                    {
+                        "name": "parse",
+                        "type": "boolean",
+                        "label": "Parse message text"
+                    },
+                    {
+                        "name": "mrkdwn",
+                        "type": "boolean",
+                        "label": "Use markdown"
+                    },
+                    {
+                        "name": "unfurl_links",
+                        "type": "boolean",
+                        "label": "Unfurl primarily text-based content"
+                    },
+                    {
+                        "name": "unfurl_media",
+                        "type": "boolean",
+                        "label": "Unfurl media content"
+                    },
+                    {
+                        "name": "icon_emoji",
+                        "type": "text",
+                        "label": "Icon emoji"
+                    },
+                    {
+                        "name": "icon_url",
+                        "type": "url",
+                        "label": "Icon url"
+                    },
+                    {
+                        "name": "username",
+                        "type": "text",
+                        "label": "User name"
+                    },
+                    {
+                        "name": "channelType",
+                        "type": "select",
+                        "label": "Channel type",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "public",
+                                "private",
+                                "im",
+                                "mpim"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "channel",
+                        "type": "select",
+                        "label": "Public channel",
+                        "required": true
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "channel",
+                        "type": "text",
+                        "label": "Channel"
+                    },
+                    {
+                        "name": "ts",
+                        "type": "text",
+                        "label": "Timestamp"
+                    },
+                    {
+                        "name": "message",
+                        "spec": [
+                            {
+                                "name": "bot_id",
+                                "type": "text",
+                                "label": "Bot ID"
+                            },
+                            {
+                                "name": "type",
+                                "type": "text",
+                                "label": "Type"
+                            },
+                            {
+                                "name": "text",
+                                "type": "text",
+                                "label": "Text"
+                            },
+                            {
+                                "name": "user",
+                                "type": "text",
+                                "label": "User"
+                            },
+                            {
+                                "name": "ts",
+                                "type": "text",
+                                "label": "Timestamp"
+                            },
+                            {
+                                "name": "team",
+                                "type": "text",
+                                "label": "Team"
+                            },
+                            {
+                                "name": "bot_profile",
+                                "spec": [
+                                    {
+                                        "name": "id",
+                                        "type": "text",
+                                        "label": "Bot ID"
+                                    },
+                                    {
+                                        "name": "deleted",
+                                        "type": "boolean",
+                                        "label": "Deleted"
+                                    },
+                                    {
+                                        "name": "name",
+                                        "type": "text",
+                                        "label": "Name"
+                                    },
+                                    {
+                                        "name": "updated",
+                                        "type": "number",
+                                        "label": "Updated"
+                                    },
+                                    {
+                                        "name": "app_id",
+                                        "type": "text",
+                                        "label": "App ID"
+                                    },
+                                    {
+                                        "name": "icons",
+                                        "spec": [
+                                            {
+                                                "name": "image_36",
+                                                "type": "text",
+                                                "label": "Image 36"
+                                            },
+                                            {
+                                                "name": "image_48",
+                                                "type": "text",
+                                                "label": "Image 48"
+                                            },
+                                            {
+                                                "name": "image_72",
+                                                "type": "text",
+                                                "label": "Image 72"
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "Icons"
+                                    },
+                                    {
+                                        "name": "team_id",
+                                        "type": "text",
+                                        "label": "Team ID"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "Bot profile"
+                            },
+                            {
+                                "name": "blocks",
+                                "spec": [
+                                    {
+                                        "name": "type",
+                                        "type": "text",
+                                        "label": "Type"
+                                    },
+                                    {
+                                        "name": "block_id",
+                                        "type": "text",
+                                        "label": "Block ID"
+                                    },
+                                    {
+                                        "name": "elements",
+                                        "type": "array",
+                                        "label": "Elements"
+                                    }
+                                ],
+                                "type": "array",
+                                "label": "Blocks"
+                            },
+                            {
+                                "name": "attachments",
+                                "type": "array",
+                                "label": "Attachments"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Message"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": [
+                [
+                    {
+                        "id": 46,
+                        "module": "util:ComposeTransformer",
+                        "version": 1,
+                        "parameters": {},
+                        "mapper": {
+                            "value": "{{substring(36.value; 2; length(36.value))}}"
+                        },
+                        "metadata": {
+                            "designer": {
+                                "x": 1107,
+                                "y": 376,
+                                "messages": [
+                                    {
+                                        "category": "link",
+                                        "severity": "warning",
+                                        "message": "The module is not connected to the data flow."
+                                    },
+                                    {
+                                        "category": "reference",
+                                        "severity": "warning",
+                                        "message": "Referenced module 'Tools - Compose a string' [36] is not accessible."
+                                    }
+                                ]
+                            },
+                            "restore": {},
+                            "expect": [
+                                {
+                                    "name": "value",
+                                    "type": "text",
+                                    "label": "Text"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": 45,
+                        "module": "util:ComposeTransformer",
+                        "version": 1,
+                        "parameters": {},
+                        "mapper": {
+                            "value": "{{substring(16.value; indexOf(16.value; \",\"); length(16.value))}}"
+                        },
+                        "metadata": {
+                            "designer": {
+                                "x": 1395,
+                                "y": 493,
+                                "messages": [
+                                    {
+                                        "category": "reference",
+                                        "severity": "warning",
+                                        "message": "Referenced module 'Tools - Compose a string' [16] is not accessible."
+                                    },
+                                    {
+                                        "category": "last",
+                                        "severity": "warning",
+                                        "message": "A transformer should not be the last module in the route."
+                                    }
+                                ]
+                            },
+                            "restore": {},
+                            "expect": [
+                                {
+                                    "name": "value",
+                                    "type": "text",
+                                    "label": "Text"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            ]
+        },
+        "zone": "eu2.make.com",
+        "notes": [
+            {
+                "moduleIds": [
+                    8
+                ],
+                "content": "<p>Forms API</p><p></p>",
+                "isFilterNote": false,
+                "metadata": {
+                    "color": "#9138FE"
+                }
+            },
+            {
+                "moduleIds": [
+                    16
+                ],
+                "content": "<p>Get all Text from Slack</p><p></p>",
+                "isFilterNote": false,
+                "metadata": {
+                    "color": "#9138FE"
+                }
+            }
+        ]
+    }
+}
