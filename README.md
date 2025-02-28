@@ -2,7 +2,30 @@
 
 ## 📌 Descrição
 Este projecto integra **Machine Learning**, **Power BI**, **Slack API** e **Make Automation** para monitorizar produtividade e fornecer previsões inteligentes no Slack.
+# 📊 PerformancePredictor - Ripple  
+🔮 *Monitorização de Performance com IA e Automação via Slack*  
 
+---
+
+## 📌 Descrição  
+Este projecto combina **Machine Learning**, **Power BI**, **Slack API** e **Make Automation** para monitorizar a produtividade e fornecer previsões inteligentes através do Slack.  
+
+🔹 **Previsão de Performance** baseada em métricas-chave dos colaboradores  
+🔹 **Automação via Slack** para pedidos e resposta instantânea  
+🔹 **Visualização em Power BI** para análise de tendências  
+🔹 **Hospedagem do Modelo no Render** para acesso contínuo  
+
+---
+## 🎯 Motivação  
+As empresas enfrentam desafios para medir e prever a produtividade dos colaboradores. Esta solução permite:  
+
+✔ **Tomadas de decisão baseadas em dados**  
+✔ **Monitorização contínua da performance**  
+✔ **Integração sem esforço via Slack**  
+✔ **Recomendações para melhoria de produtividade**  
+
+---
+ 
 ## 🏗️ Componentes Principais  
 1️⃣ **Criação e teste do modelo de Machine Learning**  
 2️⃣ **Hospedagem do modelo online no Render**  
@@ -18,19 +41,18 @@ Este projecto integra **Machine Learning**, **Power BI**, **Slack API** e **Make
 ## 📸 Capturas de Ecrã & Mídia  
 
 ### **1️⃣ Exemplo de Dashboard no Power BI**  
-#### Geral
-![Dashboard Power BI - 1](![Dashboard Page 1](https://github.com/user-attachments/assets/a543a88c-cd26-4e3e-b2d6-4679f4cb45c4)
-)  
+#### Gráfico 1
+(![Dashboard Page 1](https://github.com/user-attachments/assets/a543a88c-cd26-4e3e-b2d6-4679f4cb45c4)
 
-#### 
-![Dashboard Power BI - 1](![Dashboard Page 1](![Dashboard Page 2](https://github.com/user-attachments/assets/5befc0b1-ba8e-4bce-b876-b12d157b1da5)
-)
-)  
-####
-![Dashboard Page 3](https://github.com/user-attachments/assets/07975466-db71-45ed-b367-f4274e580824)
+#### Gráfico 2
+(![Dashboard Page 2](https://github.com/user-attachments/assets/5befc0b1-ba8e-4bce-b876-b12d157b1da5)
+  
+#### Gráfico 3
+![Dashboard Page 3](https://github.com/user-attachments/assets/5f3b02f4-3bca-4596-89c3-507d94fcee8c)
 
-####
-![Dashboard Page 4 (Filter on)](https://github.com/user-attachments/assets/41a4d335-0d68-42f4-ab17-4d4a7c256b29)
+#### Gráfico 4
+![Dashboard Page 4 (Filter on)](https://github.com/user-attachments/assets/ba8eccef-dbf4-45a5-9a86-9408dcac308d)
+
 
  
 ### **2️⃣ Fluxo de Dados com Make Automation**  
@@ -60,7 +82,10 @@ Este projecto integra **Machine Learning**, **Power BI**, **Slack API** e **Make
 4️⃣ **A previsão é registada e enviada para o Slack**  
 
 ---
-
+Simulação:
+```plaintext
+/simulacao Monthly_Salary=3000 Work_Hours_Per_Week=40 Overtime_Hours=5 Projects_Handled=3 Sick_Days=2 Remote_Work_Frequency=3 Training_Hours=10 Employee_Satisfaction_Score=4 Team_Size=5 Promotions=1 Years_At_Company=3
+```
 ---
 
 ## 🎯 Próximos Passos  
