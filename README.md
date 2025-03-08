@@ -100,5 +100,7 @@ Simulação:
 ---
 
 ## ✉️ Contacto  
-Caso tenhas dúvidas, entra em contacto via **[LinkedIn](https://linkedin.com/in/teu-perfil)** ou **email** 📩.  
+Caso tenhas dúvidas, entra em contacto via **email** 📩 mauromahassa@gmail.com.
+
+##Feito por [Daunísia Jone](https://github.com/daunisiaj) & [Mauro Reis](https://github.com/Mauroreis100/)
 
