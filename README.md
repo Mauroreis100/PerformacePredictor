@@ -87,6 +87,9 @@ Simulação:
 /simulacao Monthly_Salary=3000 Work_Hours_Per_Week=40 Overtime_Hours=5 Projects_Handled=3 Sick_Days=2 Remote_Work_Frequency=3 Training_Hours=10 Employee_Satisfaction_Score=4 Team_Size=5 Promotions=1 Years_At_Company=3
 ```
 ---
+# Simulação
+[RIPPLE EXEMPLO](https://youtu.be/F1yZTG06foM)
+---
 
 ## 🎯 Próximos Passos  
 ✅ Uso de um melhor dataset
